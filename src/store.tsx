@@ -1,4 +1,4 @@
-import { createStore } from "redux";
+import { Dispatch, combineReducers, createStore } from "redux";
 
 const initialState = {
   balance: 0,
@@ -23,7 +23,7 @@ type REDUCER_TYPE = {
   };
 };
 
-function reducer(
+function bankReducer(
   state: typeof initialState = initialState,
   action: REDUCER_TYPE
 ): typeof initialState {
@@ -69,27 +69,54 @@ function reducer(
   }
 }
 
+const reducer = combineReducers({
+  bankReducer,
+});
+
 const store = createStore(reducer);
 
-store.dispatch({
-  type: REDUCER_ACCOUNT_ACTION.DEPOSIT,
-  payload: { value: 500 },
-});
+store.dispatch(deposit);
 console.log(store.getState());
 
-store.dispatch({
-  type: REDUCER_ACCOUNT_ACTION.WITHDRAW,
-  payload: { value: 200 },
-});
-console.log(store.getState());
+// store.dispatch(withdraw);
+// console.log(store.getState());
 
-store.dispatch({
-  type: REDUCER_ACCOUNT_ACTION.REQUEST_LOAN,
-  payload: { loanAmount: 10000, loanPurpose: "pay school fees" },
-});
-console.log(store.getState());
+// store.dispatch({
+//   type: REDUCER_ACCOUNT_ACTION.REQUEST_LOAN,
+//   payload: { loanAmount: 10000, loanPurpose: "pay school fees" },
+// });
+// console.log(store.getState());
 
-store.dispatch({
-  type: REDUCER_ACCOUNT_ACTION.PAY_LOAN,
-});
-console.log(store.getState());
+// store.dispatch({
+//   type: REDUCER_ACCOUNT_ACTION.PAY_LOAN,
+// });
+// console.log(store.getState());
+
+function pay_loan() {
+  return {
+    type: REDUCER_ACCOUNT_ACTION.PAY_LOAN,
+  };
+}
+
+function deposit(amount: number) {
+  return (dispatch: Dispatch) => {
+    dispatch({
+      type: REDUCER_ACCOUNT_ACTION.DEPOSIT,
+      payload: amount,
+    });
+  };
+}
+
+function withdraw(amount: number) {
+  return {
+    type: REDUCER_ACCOUNT_ACTION.WITHDRAW,
+    payload: { value: amount },
+  };
+}
+
+function request_loan(amount: number, purpose: string) {
+  return {
+    type: REDUCER_ACCOUNT_ACTION.REQUEST_LOAN,
+    payload: { loanAmount: amount, loanPurpose: purpose },
+  };
+}
