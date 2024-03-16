@@ -1,11 +1,5 @@
 import { Dispatch, combineReducers, createStore } from "redux";
 
-const initialState = {
-  balance: 0,
-  loan: 0,
-  loanPurpose: "",
-};
-
 enum REDUCER_ACCOUNT_ACTION {
   DEPOSIT = "account/deposit",
   WITHDRAW = "account/withdraw",
