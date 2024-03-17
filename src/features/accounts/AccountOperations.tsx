@@ -2,6 +2,8 @@ import { useState } from "react";
 import { bindActionCreators } from "redux";
 import { useDispatch } from "react-redux";
 import { ActionCreators } from "../../types";
+import { useSelector } from "react-redux";
+import { Store } from "../../store";
 
 function AccountOperations() {
   const [depositAmount, setDepositAmount] = useState("");
@@ -15,6 +17,9 @@ function AccountOperations() {
     dispatch
   );
 
+  const { loan, loanPurpose: purpose } = useSelector(
+    (store: Store) => store.accounts
+  );
   function handleDeposit(amount: number) {
     deposit(amount);
     setDepositAmount("");
@@ -26,6 +31,7 @@ function AccountOperations() {
   }
 
   function handleRequestLoan(amount: number, purpose: string) {
+    if (!loanAmount || !loanPurpose) return;
     requestLoan(amount, purpose);
     setLoanAmount("");
     setLoanPurpose("");
@@ -97,7 +103,16 @@ function AccountOperations() {
         </div>
 
         <div>
-          <span>Pay back $X</span>
+          <span>
+            Pay back{" "}
+            {loan ? (
+              <>
+                {loan} for {purpose}{" "}
+              </>
+            ) : (
+              " "
+            )}
+          </span>
           <button onClick={handlePayLoan}>Pay loan</button>
         </div>
       </div>
