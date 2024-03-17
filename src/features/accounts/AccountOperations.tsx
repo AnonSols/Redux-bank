@@ -14,6 +14,7 @@ function AccountOperations() {
     ActionCreators,
     dispatch
   );
+
   function handleDeposit(amount: number) {
     deposit(amount);
     setDepositAmount("");
