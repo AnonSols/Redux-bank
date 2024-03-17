@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { bindActionCreators } from "redux";
+import { ActionCreators, store } from "./management";
+import { useDispatch } from "react-redux";
 
 function AccountOperations() {
   const [depositAmount, setDepositAmount] = useState("");
@@ -7,13 +10,38 @@ function AccountOperations() {
   const [loanPurpose, setLoanPurpose] = useState("");
   const [currency, setCurrency] = useState("USD");
 
-  function handleDeposit() {}
+  const dispatch = useDispatch();
+  const { deposit, withdraw, requestLoan, payloan } = bindActionCreators(
+    ActionCreators,
+    dispatch
+  );
+  function handleDeposit(amount: number) {
+    console.log(store.getState());
+    deposit(amount);
+    setDepositAmount("");
+  }
 
-  function handleWithdrawal() {}
+  function handleWithdrawal(amount: number) {
+    console.log(store.getState());
+    withdraw(amount);
+    setWithdrawalAmount("");
+  }
 
-  function handleRequestLoan() {}
+  function handleRequestLoan(amount: number, purpose: string) {
+    console.log(store.getState());
+    requestLoan(amount, purpose);
+    setLoanAmount("");
+    setLoanPurpose("");
+  }
 
-  function handlePayLoan() {}
+  function handlePayLoan() {
+    console.log(store.getState());
+    payloan();
+    setDepositAmount("");
+    setWithdrawalAmount("");
+    setLoanAmount("");
+    setLoanPurpose("");
+  }
 
   return (
     <div>
@@ -35,7 +63,9 @@ function AccountOperations() {
             <option value="GBP">British Pound</option>
           </select>
 
-          <button onClick={handleDeposit}>Deposit {depositAmount}</button>
+          <button onClick={() => handleDeposit(Number(depositAmount))}>
+            Deposit {depositAmount}
+          </button>
         </div>
 
         <div>
@@ -45,7 +75,7 @@ function AccountOperations() {
             value={withdrawalAmount}
             onChange={(e) => setWithdrawalAmount(`${+e.target.value}`)}
           />
-          <button onClick={handleWithdrawal}>
+          <button onClick={() => handleWithdrawal(Number(withdrawalAmount))}>
             Withdraw {withdrawalAmount}
           </button>
         </div>
@@ -63,7 +93,11 @@ function AccountOperations() {
             onChange={(e) => setLoanPurpose(e.target.value)}
             placeholder="Loan purpose"
           />
-          <button onClick={handleRequestLoan}>Request loan</button>
+          <button
+            onClick={() => handleRequestLoan(Number(loanAmount), loanPurpose)}
+          >
+            Request loan
+          </button>
         </div>
 
         <div>

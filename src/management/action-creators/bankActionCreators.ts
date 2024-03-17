@@ -1,5 +1,5 @@
 import { Dispatch } from "redux";
-import { Action } from "../actions";
+import { Action } from "../actions-types/accountAction";
 import { REDUCER_ACCOUNT_ACTION } from "../action-enum";
 
 export function deposit(amount: number) {

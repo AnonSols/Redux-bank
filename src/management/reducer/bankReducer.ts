@@ -1,16 +1,16 @@
 import { REDUCER_ACCOUNT_ACTION } from "../action-enum";
-import { Action } from "../actions";
+import { accountAction } from "../actions-types/accountAction";
 
-const initialState = {
+const InitialState = {
   balance: 0,
   loan: 0,
   loanPurpose: "",
 };
 
 export function bankReducer(
-  state: typeof initialState = initialState,
-  action: Action
-): typeof initialState {
+  state: typeof InitialState = InitialState,
+  action: accountAction
+): typeof InitialState {
   switch (action.type) {
     case REDUCER_ACCOUNT_ACTION.DEPOSIT:
       return {

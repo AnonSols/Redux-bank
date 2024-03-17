@@ -21,4 +21,4 @@ interface RequestLoan {
 interface PayLoan {
   type: REDUCER_ACCOUNT_ACTION.PAY_LOAN;
 }
-export type Action = Deposit | Withdraw | RequestLoan | PayLoan;
+export type accountAction = Deposit | Withdraw | RequestLoan | PayLoan;

@@ -5,3 +5,8 @@ export enum REDUCER_ACCOUNT_ACTION {
   REQUEST_LOAN = "account/request_loan",
   PAY_LOAN = "account/pay_loan",
 }
+
+export enum REDUCER_CUSTOMER_ACTION {
+  CREATE_CUSTOMER = "customer/create_customer",
+  UPDATE_CUSTOMER = "customer/update_customer",
+}
