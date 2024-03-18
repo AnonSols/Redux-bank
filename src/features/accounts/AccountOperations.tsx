@@ -103,17 +103,17 @@ function AccountOperations() {
         </div>
 
         <div>
-          <span>
-            Pay back{" "}
-            {loan ? (
-              <>
-                {loan} for {purpose}{" "}
-              </>
-            ) : (
-              " "
-            )}
-          </span>
-          <button onClick={handlePayLoan}>Pay loan</button>
+          {loan ? (
+            <>
+              {" "}
+              <span>
+                Pay back {loan} for ({purpose}){" "}
+              </span>
+              <button onClick={handlePayLoan}>Pay loan</button>
+            </>
+          ) : (
+            " "
+          )}
         </div>
       </div>
     </div>
