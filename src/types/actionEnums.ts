@@ -12,3 +12,7 @@ export enum REDUCER_CUSTOMER_ACTION {
   UPDATE_CUSTOMER = "customer/update_customer",
   RESET = "customer/reset",
 }
+
+export enum CURRENCY_URL {
+  HOST = "api.frankfurter.app",
+}

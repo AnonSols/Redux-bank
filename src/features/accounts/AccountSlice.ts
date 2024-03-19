@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 import { AccountAction } from "../../types/accountTypes";
-import { REDUCER_ACCOUNT_ACTION } from "../../types/actionEnums";
+import { CURRENCY_URL, REDUCER_ACCOUNT_ACTION } from "../../types/actionEnums";
 
 const InitialState = {
   balance: 0,
@@ -49,12 +49,26 @@ export function bankReducer(
   }
 }
 
-export function deposit(amount: number) {
-  return (dispatch: Dispatch<AccountAction>) =>
-    dispatch({
-      type: REDUCER_ACCOUNT_ACTION.DEPOSIT,
-      payload: amount,
-    });
+export function deposit(amount: number, currency: string) {
+  if (currency === "USD")
+    return (dispatch: Dispatch<AccountAction>) =>
+      dispatch({
+        type: REDUCER_ACCOUNT_ACTION.DEPOSIT,
+        payload: amount,
+      });
+
+  return async function (dispatch, getState) {
+    try {
+      const res = await fetch(
+        `https://${CURRENCY_URL}/latest?amount=10&from=${currency}&to=USD`
+      );
+
+      const data = res.json();
+      console.log(data);
+    } catch (e) {
+      console.log((e as Error).message);
+    }
+  };
 }
 
 export function withdraw(amount: number) {
