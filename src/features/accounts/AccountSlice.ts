@@ -1,11 +1,13 @@
 import { Dispatch } from "redux";
 import { AccountAction } from "../../types/accountTypes";
 import { CURRENCY_URL, REDUCER_ACCOUNT_ACTION } from "../../types/actionEnums";
+// import { RootState } from "../../store";
 
 const InitialState = {
   balance: 0,
   loan: 0,
   loanPurpose: "",
+  isLoading: false,
 };
 
 export function bankReducer(
@@ -17,8 +19,14 @@ export function bankReducer(
       return {
         ...state,
         balance: state.balance + action.payload,
+        isLoading: false,
       };
 
+    case REDUCER_ACCOUNT_ACTION.ISLOADING:
+      return {
+        ...state,
+        isLoading: true,
+      };
     case REDUCER_ACCOUNT_ACTION.WITHDRAW:
       return {
         ...state,
@@ -55,16 +63,24 @@ export function deposit(amount: number, currency: string) {
       dispatch({
         type: REDUCER_ACCOUNT_ACTION.DEPOSIT,
         payload: amount,
+        isLoading: false,
       });
 
-  return async function (dispatch, getState) {
+  return async function (dispatch: Dispatch<AccountAction>) {
     try {
+      dispatch({ type: REDUCER_ACCOUNT_ACTION.ISLOADING });
       const res = await fetch(
-        `https://${CURRENCY_URL}/latest?amount=10&from=${currency}&to=USD`
+        `https://${CURRENCY_URL.HOST}/latest?amount=10&from=${currency}&to=USD`
       );
 
-      const data = res.json();
-      console.log(data);
+      const data = await res.json();
+      const currentAmount = data.rates.USD;
+
+      dispatch({
+        type: REDUCER_ACCOUNT_ACTION.DEPOSIT,
+        payload: currentAmount,
+        isLoading: false,
+      });
     } catch (e) {
       console.log((e as Error).message);
     }

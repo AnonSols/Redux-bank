@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { bindActionCreators } from "redux";
 import { useDispatch } from "react-redux";
-import { ActionCreators } from "../../types";
 import { useSelector } from "react-redux";
 import { Store } from "../../store";
+import { ActionCreators } from "../../types";
 
 function AccountOperations() {
   const [depositAmount, setDepositAmount] = useState("");
@@ -20,8 +20,9 @@ function AccountOperations() {
   const { loan, loanPurpose: purpose } = useSelector(
     (store: Store) => store.accounts
   );
-  function handleDeposit(amount: number) {
-    deposit(amount);
+  function handleDeposit(amount: number, currency: string) {
+    deposit(amount, currency);
+
     setDepositAmount("");
   }
 
@@ -65,7 +66,9 @@ function AccountOperations() {
             <option value="GBP">British Pound</option>
           </select>
 
-          <button onClick={() => handleDeposit(Number(depositAmount))}>
+          <button
+            onClick={() => handleDeposit(Number(depositAmount), currency)}
+          >
             Deposit {depositAmount}
           </button>
         </div>

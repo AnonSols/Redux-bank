@@ -3,11 +3,16 @@ import { REDUCER_ACCOUNT_ACTION } from "./actionEnums";
 interface Deposit {
   type: REDUCER_ACCOUNT_ACTION.DEPOSIT;
   payload: number;
+  isLoading: boolean;
 }
 
 interface Withdraw {
   type: REDUCER_ACCOUNT_ACTION.WITHDRAW;
   payload: number;
+}
+
+interface Loading {
+  type: REDUCER_ACCOUNT_ACTION.ISLOADING;
 }
 
 interface RequestLoan {
@@ -21,4 +26,9 @@ interface RequestLoan {
 interface PayLoan {
   type: REDUCER_ACCOUNT_ACTION.PAY_LOAN;
 }
-export type AccountAction = Deposit | Withdraw | RequestLoan | PayLoan;
+export type AccountAction =
+  | Deposit
+  | Withdraw
+  | RequestLoan
+  | PayLoan
+  | Loading;
