@@ -17,13 +17,16 @@ function AccountOperations() {
     dispatch
   );
 
-  const { loan, loanPurpose: purpose } = useSelector(
-    (store: Store) => store.accounts
-  );
+  const {
+    loan,
+    loanPurpose: purpose,
+    isLoading,
+  } = useSelector((store: Store) => store.accounts);
   function handleDeposit(amount: number, currency: string) {
     deposit(amount, currency);
 
     setDepositAmount("");
+    setCurrency("USD");
   }
 
   function handleWithdrawal(amount: number) {
@@ -66,11 +69,15 @@ function AccountOperations() {
             <option value="GBP">British Pound</option>
           </select>
 
-          <button
-            onClick={() => handleDeposit(Number(depositAmount), currency)}
-          >
-            Deposit {depositAmount}
-          </button>
+          {isLoading ? (
+            <strong> Converting curreny </strong>
+          ) : (
+            <button
+              onClick={() => handleDeposit(Number(depositAmount), currency)}
+            >
+              Deposit {depositAmount}{" "}
+            </button>
+          )}
         </div>
 
         <div>

@@ -1,12 +1,29 @@
-import { Dispatch } from "redux";
-import { CustomerAction, REDUCER_CUSTOMER_ACTION } from "../../types";
+import { configureStore, createSlice } from "@reduxjs/toolkit";
 
-const customerState = {
+const initialState = {
   fullName: "",
   nationalId: "",
   createdAt: "",
 };
 
+const customerSlice = createSlice({
+  name: "customer",
+  initialState,
+  reducers: {
+    createCustomer(state, action) {
+      state.fullName = action.payload.fullname;
+      state.nationalId = action.payload.nationalId;
+      state.createdAt = action.payload.currentTime;
+    },
+    updateCustomer(state, action) {
+      state.fullName = action.payload;
+    },
+  },
+});
+
+export default customerSlice;
+
+/*
 export function customerReducer(
   state: typeof customerState = customerState,
   action: CustomerAction
@@ -63,3 +80,4 @@ export function resetCustomer() {
   return (dispatch: Dispatch<CustomerAction>) =>
     dispatch({ type: REDUCER_CUSTOMER_ACTION.RESET });
 }
+*/

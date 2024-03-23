@@ -1,15 +1,45 @@
-import { Dispatch } from "redux";
-import { AccountAction } from "../../types/accountTypes";
-import { CURRENCY_URL, REDUCER_ACCOUNT_ACTION } from "../../types/actionEnums";
+// import { Dispatch } from "redux";
+// import { AccountAction } from "../../types/accountTypes";
+// import { CURRENCY_URL, REDUCER_ACCOUNT_ACTION } from "../../types/actionEnums";
 // import { RootState } from "../../store";
 
-const InitialState = {
+import { createSlice } from "@reduxjs/toolkit";
+
+const initialState = {
   balance: 0,
   loan: 0,
   loanPurpose: "",
   isLoading: false,
 };
 
+const accountSlice = createSlice({
+  name: "account",
+  initialState,
+  reducers: {
+    deposit(state, action) {
+      state.balance = state.balance + action.payload;
+    },
+    withdraw(state, action) {
+      state.balance -= action.payload;
+    },
+    requestLoan(state, action) {
+      if (state.loan > 0) return;
+
+      state.loan = action.payload.loanAmount;
+      state.loanPurpose = action.payload.loanPurpose;
+      state.balance = action.payload.loanAmount + state.balance;
+    },
+    payLoan(state) {
+      state.loan = 0;
+      state.loanPurpose = "";
+      state.balance -= state.loan;
+    },
+  },
+});
+
+export const { deposit, withdraw, payLoan, requestLoan } = accountSlice.actions;
+export default accountSlice.reducer;
+/*
 export function bankReducer(
   state: typeof InitialState = InitialState,
   action: AccountAction
@@ -110,3 +140,4 @@ export function payloan() {
   return (dispatch: Dispatch<AccountAction>) =>
     dispatch({ type: REDUCER_ACCOUNT_ACTION.PAY_LOAN });
 }
+*/
