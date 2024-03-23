@@ -3,7 +3,7 @@
 // import { CURRENCY_URL, REDUCER_ACCOUNT_ACTION } from "../../types/actionEnums";
 // import { RootState } from "../../store";
 
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initialState = {
   balance: 0,
@@ -22,17 +22,28 @@ const accountSlice = createSlice({
     withdraw(state, action) {
       state.balance -= action.payload;
     },
-    requestLoan(state, action) {
-      if (state.loan > 0) return;
+    requestLoan: {
+      prepare(amount: number, purpose: string) {
+        return {
+          payload: { amount, purpose },
+        };
+      },
+      reducer(
+        state,
+        action: PayloadAction<{ amount: number; purpose: string }>
+      ) {
+        if (state.loan > 0) return;
 
-      state.loan = action.payload.loanAmount;
-      state.loanPurpose = action.payload.loanPurpose;
-      state.balance = action.payload.loanAmount + state.balance;
+        state.loan = action.payload.amount;
+        state.loanPurpose = action.payload.purpose;
+        state.balance = action.payload.amount + state.balance;
+      },
     },
+
     payLoan(state) {
+      state.balance -= state.loan;
       state.loan = 0;
       state.loanPurpose = "";
-      state.balance -= state.loan;
     },
   },
 });

@@ -1,4 +1,4 @@
-import { configureStore, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   fullName: "",
@@ -21,7 +21,8 @@ const customerSlice = createSlice({
   },
 });
 
-export default customerSlice;
+export const { createCustomer, updateCustomer } = customerSlice.actions;
+export default customerSlice.reducer;
 
 /*
 export function customerReducer(

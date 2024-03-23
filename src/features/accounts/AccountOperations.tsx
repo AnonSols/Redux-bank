@@ -2,7 +2,7 @@ import { useState } from "react";
 import { bindActionCreators } from "redux";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
-import { Store } from "../../store";
+import { State } from "../../store-v1";
 import { ActionCreators } from "../../types";
 
 function AccountOperations() {
@@ -12,7 +12,7 @@ function AccountOperations() {
   const [loanPurpose, setLoanPurpose] = useState("");
   const [currency, setCurrency] = useState("USD");
   const dispatch = useDispatch();
-  const { deposit, withdraw, requestLoan, payloan } = bindActionCreators(
+  const { deposit, withdraw, requestLoan, payLoan } = bindActionCreators(
     ActionCreators,
     dispatch
   );
@@ -21,9 +21,9 @@ function AccountOperations() {
     loan,
     loanPurpose: purpose,
     isLoading,
-  } = useSelector((store: Store) => store.accounts);
-  function handleDeposit(amount: number, currency: string) {
-    deposit(amount, currency);
+  } = useSelector((store: State) => store.accounts);
+  function handleDeposit(amount: number) {
+    deposit(amount);
 
     setDepositAmount("");
     setCurrency("USD");
@@ -42,7 +42,7 @@ function AccountOperations() {
   }
 
   function handlePayLoan() {
-    payloan();
+    payLoan();
     setDepositAmount("");
     setWithdrawalAmount("");
     setLoanAmount("");

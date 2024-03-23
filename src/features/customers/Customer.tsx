@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { State } from "../../store";
+import { State } from "../../store-v1";
 
 function Customer() {
   const { fullName } = useSelector((state: State) => state.customers);
