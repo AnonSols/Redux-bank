@@ -3,7 +3,12 @@
 // import { CURRENCY_URL, REDUCER_ACCOUNT_ACTION } from "../../types/actionEnums";
 // import { RootState } from "../../store";
 
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, Dispatch, PayloadAction } from "@reduxjs/toolkit";
+import {
+  AccountAction,
+  CURRENCY_URL,
+  REDUCER_ACCOUNT_ACTION,
+} from "../../types";
 
 const initialState = {
   balance: 0,
@@ -18,6 +23,7 @@ const accountSlice = createSlice({
   reducers: {
     deposit(state, action) {
       state.balance = state.balance + action.payload;
+      state.isLoading = false;
     },
     withdraw(state, action) {
       state.balance -= action.payload;
@@ -45,11 +51,39 @@ const accountSlice = createSlice({
       state.loan = 0;
       state.loanPurpose = "";
     },
+    isLoading(state) {
+      state.isLoading = true;
+    },
   },
 });
 
-export const { deposit, withdraw, payLoan, requestLoan } = accountSlice.actions;
+export const { withdraw, payLoan, requestLoan, isLoading } =
+  accountSlice.actions;
+
+export const deposit = (amount: number, currency: string) => {
+  if (currency === "USD")
+    return (dispatch: Dispatch<AccountAction>) =>
+      dispatch({ type: REDUCER_ACCOUNT_ACTION.DEPOSIT, payload: amount });
+
+  return async (dispatch: Dispatch<AccountAction>) => {
+    dispatch({ type: REDUCER_ACCOUNT_ACTION.ISLOADING });
+
+    const res = await fetch(
+      `https://${CURRENCY_URL.HOST}/latest?amount=10&from=${currency}&to=USD`
+    );
+
+    const data = await res.json();
+
+    const convertedCurrency: number = data.rates.USD;
+    dispatch({
+      type: REDUCER_ACCOUNT_ACTION.DEPOSIT,
+      payload: convertedCurrency,
+    });
+  };
+};
+
 export default accountSlice.reducer;
+
 /*
 export function bankReducer(
   state: typeof InitialState = InitialState,

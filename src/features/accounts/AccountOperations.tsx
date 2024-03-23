@@ -22,8 +22,8 @@ function AccountOperations() {
     loanPurpose: purpose,
     isLoading,
   } = useSelector((store: State) => store.accounts);
-  function handleDeposit(amount: number) {
-    deposit(amount);
+  function handleDeposit(amount: number, currency: string) {
+    deposit(amount, currency);
 
     setDepositAmount("");
     setCurrency("USD");

@@ -3,7 +3,6 @@ import { REDUCER_ACCOUNT_ACTION } from "./actionEnums";
 interface Deposit {
   type: REDUCER_ACCOUNT_ACTION.DEPOSIT;
   payload: number;
-  isLoading: boolean;
 }
 
 interface Withdraw {
