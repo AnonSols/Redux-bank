@@ -9,6 +9,7 @@ const initialState = {
 type customerType = {
   fullName: string;
   nationalId: string;
+  createdAt: string;
 };
 const customerSlice = createSlice({
   name: "customer",
@@ -27,6 +28,7 @@ const customerSlice = createSlice({
       reducer(state, action: PayloadAction<customerType>) {
         state.fullName = action.payload.fullName;
         state.nationalId = action.payload.nationalId;
+        state.createdAt = action.payload.createdAt;
       },
     },
     updateCustomer(state, action) {
